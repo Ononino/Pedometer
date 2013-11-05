@@ -4,7 +4,7 @@ Pedometer
 Pedometer
 library("ggplot2")
 
-## Graf 1 km / izmena (12)
+## Graf 1: Povprečno število opravljenih kilometrov v različnih izmenah
 d1 <- read.csv(file="meritve.csv",head=TRUE,sep=",")
 d2 <- read.csv(file="podatki2.csv",head=TRUE,sep=",")
 
@@ -29,7 +29,7 @@ ggplot(data=aggdata, aes(x=Izmena, y=Kilometri, fill=Izmena)) + geom_bar(colour=
        legend.position="none")
 
 
-## Graf 2 km / izmena (12)
+## Graf 2: Povprečno število opravljenih kilometrov na uro v različnih izmenah
 d1 <- read.csv(file="meritve.csv",head=TRUE,sep=",")
 d2 <- read.csv(file="podatki2.csv",head=TRUE,sep=",")
 
@@ -45,7 +45,6 @@ aggdata[,1] <- factor(c("Dopoldan", "Vikend dnevna", "Tedenska nočna", "Vikend 
 ggplot(aggdata, aes(x=Izmena, y=Km, fill=Izmena)) + geom_bar(colour="black")
 
 
-## Dodatno k prejsnjemu grafu - povprecno na uro (13)
 aggdata$Hours <- c(8, 12, 9, 12, 7)
 aggdata$KilometersHours <- aggdata$Km / aggdata$Hours
 ggplot(data=aggdata, aes(x=Izmena, y=KilometersHours, fill=Izmena)) + geom_bar(colour="black") +
@@ -56,7 +55,7 @@ ggplot(data=aggdata, aes(x=Izmena, y=KilometersHours, fill=Izmena)) + geom_bar(c
        legend.position="none") + scale_y_continuous('Kilometri / uro')
        
 
-## Graf 3 Kilometri glede na dan v tednu (15)
+## Graf 3: Povprečno število opravljenih kilometrov v vseh delovnih izmenah glede na posamezen dan v celotnem tednu 
 aggDT <-aggregate(dAll$Km, by=list(dAll$Dan), FUN=mean, na.rm=TRUE)
 aggDTSort <- aggDT
 names(aggDTSort) <- c("Dan", "Kilometri")
@@ -70,7 +69,7 @@ ggplot(data=aggDTSort, aes(x=Dan, y=Kilometri, fill=Dan)) +
        legend.position="none")
 
 
-## Graf 4 Koraki po tednih ????
+## Graf 4: Povprečno število skupno opravljenih korakov v posameznem tednu študije 
 aggKT <-aggregate(dAll$Koraki, by=list(dAll$Datum2), FUN=mean, na.rm=TRUE)
 aggKT[,1] <- ceiling(aggKT[,1]/7)
 names(aggKT) <- c("Teden", "Koraki")
@@ -87,8 +86,7 @@ ggplot(data=aggKT3, aes(x=Teden, y=Koraki, group=1)) + geom_point() + geom_smoot
        legend.position="none") + scale_y_continuous('Število korakov')
 
 
-# ## Graf 5 Kategorije po Locke (24)
-##        spremeniti D v M ali v Morning; P v A ali Afternoon; N v WNT ali Weekly Night-time; DN ali v WD ali v Weekend Daily; NN ali WN ali v Weekend Nightly
+## Graf 5: Število udeležencev glede na njihovo povprečno število opravljenih korakov v različnih izmenah
 
 aggUd <-aggregate(dAll$Koraki, by=list(dAll$Pedometer, dAll$Izmena), FUN=mean, na.rm=TRUE)
 names(aggUd) <- c("Udelezenec", "Izmena", "Koraki")
@@ -127,9 +125,7 @@ ggplot(data=aggLocke, aes(x=Izmena, y=Koraki, fill=Kategorija)) + geom_bar(posit
    opts(legend.text = theme_text(colour="#000000", size = 14, face = "bold"))
 
 
-## Graf 6 Povprecno stevilo KM po dnevih in izmenah; 
-## ZELJE: povrsti D; P; N; DN; NN
-##        spremeniti D v M ali v Morning; P v A ali Afternoon; N v WNT ali Weekly Night-time; DN ali v WD ali v Weekend Daily; NN ali WN ali v Weekend Nightly
+## Graf 6: Nihanje števila opravljenih kilometrov v različnih izmenah skozi obdobje študije
 
 aggSD2 <-aggregate(dAll$Km, by=list(dAll$Datum2, dAll$Izmena), FUN=mean, na.rm=TRUE)
 # Extend the regression lines beyond the domain of the data
@@ -155,7 +151,8 @@ ggplot(aggSD2, aes(x=Dan, y=Kilometri, color=Izmena)) + geom_point(shape=1) +
                           opts(legend.text = theme_text(colour="#000000", size = 14, face = "bold"))
 
 
-## Graf 7 Stevilo pacientov na oddelku za vseh 92 dni (11)
+Graf 7: Povezava med delovno obremenitvijo MS glede na število pacientov skozi obdobje študije
+
 ## Dodamo se obremenitev iz workload.csv
 pac <- read.csv(file="pacientiPoDnevih.csv",head=TRUE,sep=",")
 names(pac) <- c("", "Dan", "Pacienti")
@@ -180,7 +177,7 @@ ggplot(df, aes(x=Dan, y=Podatki)) +
          opts(strip.text.y = theme_text(face="bold", angle=90, colour="#990000", size=16))
 
 
-## Slopechart/Graf 8 primerjave dolzine korakov (20)
+## Graf 8: Primerjava dveh različnih meritev za pridobitev podatka o povprečni dolžini koraka
 d3 <- c(d2[,7], d2[,8])
 d4 <- c(rep("Meritev 1", 20), rep("Meritev 2", 20))
 d5 <- c(1:20, 1:20)
